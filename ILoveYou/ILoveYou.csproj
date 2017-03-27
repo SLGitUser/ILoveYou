@@ -33,7 +33,8 @@
     <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
+    <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -44,6 +45,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="log4net, Version=2.0.7.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -173,6 +178,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoveController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Controllers\QQLoginController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -183,8 +189,11 @@
     <Compile Include="Models\Message.cs" />
     <Compile Include="Models\MessageContext.cs" />
     <Compile Include="Models\QQModel.cs" />
+    <Compile Include="Models\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Tools\LogHelper.cs" />
+    <Compile Include="Tools\UserWebResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -203,6 +212,7 @@
     <Content Include="Content\images\WebICON.png" />
     <Content Include="Content\images\WebICON1.png" />
     <Content Include="Content\images\WebICON2.png" />
+    <Content Include="Content\images\WebICON3.png" />
     <Content Include="Content\music\樊凡 - 守护 - 小爸爸 电视原声带.mp3" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -224,9 +234,6 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Upload\BackImg\56d945a7-e43e-45d4-b632-300555986bdddog.jpg" />
-    <Content Include="Upload\BackMusic\de0352c0-8b2c-425e-9e43-41d131f75940樊凡 - 守护 - 小爸爸 电视原声带.mp3" />
-    <Content Include="Upload\BackMusic\金南玲 - 逆流成河.mp3" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -264,9 +271,25 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Love\Index.cshtml" />
+    <Content Include="Log4Net.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Log4Net.Debug.config">
+      <DependentUpon>Log4Net.config</DependentUpon>
+    </Content>
+    <Content Include="Log4Net.Release.config">
+      <DependentUpon>Log4Net.config</DependentUpon>
+    </Content>
+    <Content Include="Views\Messages\Create.cshtml" />
+    <Content Include="Views\Messages\Delete.cshtml" />
+    <Content Include="Views\Messages\Details.cshtml" />
+    <Content Include="Views\Messages\Edit.cshtml" />
+    <Content Include="Views\Messages\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Upload\BackImg\" />
+    <Folder Include="Upload\BackMusic\" />
     <Folder Include="Views\QQLogin\" />
   </ItemGroup>
   <ItemGroup>

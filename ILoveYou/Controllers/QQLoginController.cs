@@ -1,70 +1,101 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Web;
+﻿using System.Configuration;
 using System.Web.Mvc;
-using System.Xml;
 using ILoveYou.Models;
 using Newtonsoft.Json;
+using ILoveYou.Tools;
+using System;
+using System.Linq;
 
 namespace ILoveYou.Controllers
 {
     public class QQLoginController : Controller
     {
-        private const string URL = "https://graph.qq.com/user/get_user_info?oauth_consumer_key=100330589&access_token=9DC2F0EE73AA18011DFA7E94F73F348A&openid=DABFF9E3B831FD725520A6FBAD1505D3&format=json";
+        
+        private MessageContext db = new MessageContext();
         public ActionResult Index()
         {
+            //此code会在10分钟内过期,用于请求获取Access Token
+            string code =Request["code"];
+            string appID = ConfigurationManager.AppSettings["QQAppID"];
+            string appKey = ConfigurationManager.AppSettings["QQAppKey"];
+            string openID = "";
+            if (!string.IsNullOrEmpty(code))
+            {
+            string qQCallBack= ConfigurationManager.AppSettings["QQCallBack"];
+            string redUrl = "https://graph.qq.com/oauth2.0/token?grant_type=authorization_code&client_id="+appID+ "&client_secret="+ appKey+ "&code="+code+ "&redirect_uri="+qQCallBack;
+
+                string result = UserWebResponse.WebResponse(redUrl);
+                string token = "";
+                if (!string.IsNullOrEmpty(result))
+                {
+                    int tokenIndex = result.IndexOf("access_token");
+                    token = result.Substring(tokenIndex+13, result.IndexOf("&")- result.IndexOf("=")-1);
+                    Session["access_token"] = token;
+                }
+                if (!string.IsNullOrEmpty(token))
+                {
+                    LogHelper.WriteLog("获取OpenID");
+                    redUrl = "https://graph.qq.com/oauth2.0/me?access_token=" + token;
+                    result = UserWebResponse.WebResponse(redUrl);
+                    result = result.Substring(result.IndexOf('{'), result.IndexOf('}') - result.IndexOf('{') + 1);
+                    Session["openId"] = JsonConvert.DeserializeObject<QQModel>(result).openid;
+                    openID = Session["openId"].ToString();
+                    if (!string.IsNullOrEmpty(appID) && !string.IsNullOrEmpty(token) && !string.IsNullOrEmpty(openID))
+                    {
+                        LogHelper.WriteLog("获取用户信息");
+                        redUrl = "https://graph.qq.com/user/get_user_info?access_token=" + token + "&oauth_consumer_key=" + appID + "&openid=" + openID;
+                        result = UserWebResponse.WebResponse(redUrl);
+                        QQModel userInfo = JsonConvert.DeserializeObject<QQModel>(result);
+                        userInfo.openid = openID;
+                        LogHelper.WriteLog("保存到数据库");
+                        SaveUserDataToDB(userInfo);
+                        LogHelper.WriteLog("保存到Session");
+                        SaveToSession(userInfo);//将qq用户信息存储在Session中
+                        LogHelper.WriteLog("处理数据完毕，执行页面操作！");
+                        return Content("<script>window.opener.location.href = window.opener.location.href;window.close();</script>");
+                    }
+                }
+                
+                return Content(result);
+            }
+            return Content("错误！");
+        }
+        //将QQ用户信息保存到数据库
+        public void SaveUserDataToDB(QQModel userInfo)
+        {
+            int existCount = db.UserInfoes.Count(m=>m.QqOpenId==userInfo.openid);
+            LogHelper.WriteLog(string.Format("OpenId:{0},库中包含{1}条相关数据！",userInfo.openid,existCount));
+            if (existCount>0)
+            {
+                return;
+            }
             try
             {
-                var request = (System.Net.HttpWebRequest)System.Net.WebRequest.Create(URL);
-                if (request != null)
+                var at = DateTime.Now;
+                LogHelper.WriteLog("---准备创建用户数据实例");
+                db.UserInfoes.Add(new UserInfo
                 {
-                    string retval = null;
-                    init_Request(ref request);
-                    using (var response = request.GetResponse())
-                    {
-                        using (var reader = new System.IO.StreamReader(response.GetResponseStream(), System.Text.Encoding.UTF8))
-                        {
-                            retval = reader.ReadToEnd();
-                        }
-                    }
-                    retval = retval.Replace(@"\t", "");
-                    retval = retval.Replace(@"\n", "");
-                    var str = JsonConvert.DeserializeObject<QQModel>(retval);
-                    return Json(new { reqData = str, opts=true},JsonRequestBehavior.AllowGet);
-                }
+                    NickName = userInfo.nickname,
+                    QqOpenId = userInfo.openid,
+                    CreatedAt = at,
+                    CreatedBy = "SYSTEM"
+                });
+                LogHelper.WriteLog("---准备保存用户数据");
+                db.SaveChanges();
+                LogHelper.WriteLog("---保存成功");
             }
-            catch(Exception e)
+            catch (Exception ex)
             {
-                return null;
+                LogHelper.WriteLog("---保存用户数据出错，原因："+ex.Message);
+                throw;
             }
-            return null;
-            //QOpenClient qzone = null;
-            //QConnectSDK.Models.User currentUser = null;
-            //var verifier = Request.Params["code"];
-            //string state1 = Session["requeststate"].ToString();
-            //qzone = new QOpenClient(verifier, state1);
-            //currentUser = qzone.GetCurrentUser();
-            //if (null != currentUser)
-            //{
-            //    return Content(currentUser.Nickname);
-            //}
-            //Session["QzoneOauth"] = qzone; return View();
+        }
+        //将用户昵称和头像url保存到Session
+        public void SaveToSession(QQModel userInfo)
+        {
+            Session["UserNickName"] = userInfo.nickname;
+            Session["UserFigureurl"] = userInfo.figureurl_qq_1;
         }
 
-        private static void init_Request(ref System.Net.HttpWebRequest request)
-        {
-            //request.Accept = "text/json,*/*;q=0.5";
-            request.Proxy = null;
-            request.KeepAlive = false;
-            request.Method = "GET";
-            request.ContentType = "application/json; charset=UTF-8";
-            request.Accept = "*/*";
-            request.Headers.Add("Accept-Charset", "utf-8;q=0.7,*;q=0.7");
-            request.Headers.Add("Accept-Encoding", "gzip, deflate, sdch");
-            request.AutomaticDecompression = System.Net.DecompressionMethods.GZip;
-            request.Timeout = 8000;
-        }
     }
 }

@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using ILoveYou.Models;
 using Microsoft.Ajax.Utilities;
+using ILoveYou.Tools;
 
 namespace ILoveYou.Controllers
 {
@@ -15,6 +16,7 @@ namespace ILoveYou.Controllers
         // GET: Love
         public ActionResult Index()
         {
+            LogHelper.WriteLog("----页面加载");
             MessageContext db = new MessageContext();
             //string url = Server.MapPath("/Content/text/Content.txt");
             //List<string> content = System.IO.File.ReadLines(url).ToList();
@@ -26,6 +28,7 @@ namespace ILoveYou.Controllers
             return View(messages);
         }
 
+        [HttpGet]
         public ActionResult ClickQq()
         {
             string state = new Random(100000).Next(99, 99999).ToString();//随机数
@@ -34,7 +37,7 @@ namespace ILoveYou.Controllers
             string qqAuthorizeURL = ConfigurationManager.AppSettings["QQAuthorizeURL"];
             string callback = ConfigurationManager.AppSettings["QQCallBack"];
             string authenticationUrl = string.Format("{0}?client_id={1}&response_type=code&redirect_uri={2}&state={3}", qqAuthorizeURL, appID, callback, state);//互联地址
-            return new RedirectResult(authenticationUrl);
+            return JavaScript("window.open('"+authenticationUrl+"','','scrollbars=yes,status =yes')");
         }
 
         /// <summary>
@@ -55,7 +58,7 @@ namespace ILoveYou.Controllers
                 string file = backImg.FileName;
                 FileInfo files = new FileInfo(file);
                 var guidImg = Guid.NewGuid();
-                string pathStr = "/Upload/BackImg/" + guidImg + files.Name;
+                string pathStr = "/Upload/BackImg/" + guidImg + files.Extension;
                 backImg.SaveAs(Request.MapPath(pathStr));
                 message.BackImg = pathStr;
             }
@@ -65,7 +68,7 @@ namespace ILoveYou.Controllers
                 string file = backMus.FileName;
                 FileInfo files = new FileInfo(file);
                 var guidMus = Guid.NewGuid();
-                string pathStr = "/Upload/BackMusic/" + guidMus + files.Name;
+                string pathStr = "/Upload/BackMusic/" + guidMus + files.Extension;
                 backMus.SaveAs(Request.MapPath(pathStr));
                 message.BackMusic = pathStr;
             }

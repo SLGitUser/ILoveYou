@@ -6,11 +6,18 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
-    <_PublishTargetUrl>E:\WebSite\ILoveYou</_PublishTargetUrl>
+    <_PublishTargetUrl>ftp://bxw2359330690.my3w.com/</_PublishTargetUrl>
+    <EncryptedPassword>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAA5OnE+DF5kUCYR6GhtwbHOgAAAAACAAAAAAAQZgAAAAEAACAAAACVdpcpX3UW6spRZIxjE82vXXEHJMgomd6WlrHdQ8SM2AAAAAAOgAAAAAIAACAAAADIxMh/3QvhwaDzMaWSoL7K7Yd4McaUb2PUb+DhsrkDICAAAADSfJIT3AdKarrfGA2BZLyUQradDjOczC5du4dlCFaTKkAAAACKvC/reQQqxpcgFXsVaGUVH1rViEUhegajCF20EnHKTbVnmnSV3fo9+sk/60c8ajIjoaDb7/+Rja+BBR4OkPfe</EncryptedPassword>
   </PropertyGroup>
   <ItemGroup>
     <File Include="bin/Antlr3.Runtime.dll">
       <publishTime>11/08/2015 16:31:26</publishTime>
+    </File>
+    <File Include="bin/App_global.asax.compiled">
+      <publishTime>12/17/2016 15:26:17</publishTime>
+    </File>
+    <File Include="bin/App_global.asax.dll">
+      <publishTime>12/17/2016 15:26:17</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>11/08/2015 16:31:34</publishTime>
@@ -19,7 +26,10 @@
       <publishTime>11/08/2015 16:31:34</publishTime>
     </File>
     <File Include="bin/ILoveYou.dll">
-      <publishTime>12/14/2016 22:05:38</publishTime>
+      <publishTime>02/19/2017 17:43:14</publishTime>
+    </File>
+    <File Include="bin/log4net.dll">
+      <publishTime>01/07/2017 20:00:54</publishTime>
     </File>
     <File Include="bin/Microsoft.AspNet.Identity.Core.dll">
       <publishTime>11/08/2015 16:31:44</publishTime>
@@ -177,6 +187,9 @@
     <File Include="Content/images/WebICON2.png">
       <publishTime>12/10/2016 19:20:27</publishTime>
     </File>
+    <File Include="Content/images/WebICON3.png">
+      <publishTime>12/10/2016 21:20:20</publishTime>
+    </File>
     <File Include="Content/music/樊凡 - 守护 - 小爸爸 电视原声带.mp3">
       <publishTime>11/08/2015 16:38:34</publishTime>
     </File>
@@ -204,8 +217,20 @@
     <File Include="Global.asax">
       <publishTime>11/08/2015 16:30:32</publishTime>
     </File>
+    <File Include="Log4Net.config">
+      <publishTime>01/07/2017 21:17:18</publishTime>
+    </File>
+    <File Include="Log4Net.Debug.config">
+      <publishTime>01/07/2017 20:05:01</publishTime>
+    </File>
+    <File Include="Log4Net.Release.config">
+      <publishTime>01/07/2017 20:05:01</publishTime>
+    </File>
     <File Include="packages.config">
       <publishTime>11/08/2015 16:31:52</publishTime>
+    </File>
+    <File Include="PrecompiledApp.config">
+      <publishTime>12/17/2016 15:26:11</publishTime>
     </File>
     <File Include="Scripts/bootstrap.js">
       <publishTime>11/08/2015 16:30:52</publishTime>
@@ -301,7 +326,7 @@
       <publishTime>11/08/2015 16:30:32</publishTime>
     </File>
     <File Include="Views/Love/Index.cshtml">
-      <publishTime>12/14/2016 22:03:38</publishTime>
+      <publishTime>01/08/2017 13:35:09</publishTime>
     </File>
     <File Include="Views/Manage/AddPhoneNumber.cshtml">
       <publishTime>11/08/2015 16:31:32</publishTime>
@@ -321,6 +346,21 @@
     <File Include="Views/Manage/VerifyPhoneNumber.cshtml">
       <publishTime>11/08/2015 16:31:32</publishTime>
     </File>
+    <File Include="Views/Messages/Create.cshtml">
+      <publishTime>02/18/2017 14:33:26</publishTime>
+    </File>
+    <File Include="Views/Messages/Delete.cshtml">
+      <publishTime>02/18/2017 14:33:28</publishTime>
+    </File>
+    <File Include="Views/Messages/Details.cshtml">
+      <publishTime>02/18/2017 14:33:30</publishTime>
+    </File>
+    <File Include="Views/Messages/Edit.cshtml">
+      <publishTime>02/18/2017 14:33:31</publishTime>
+    </File>
+    <File Include="Views/Messages/Index.cshtml">
+      <publishTime>02/19/2017 17:46:50</publishTime>
+    </File>
     <File Include="Views/Shared/Error.cshtml">
       <publishTime>11/08/2015 16:31:32</publishTime>
     </File>
@@ -328,7 +368,7 @@
       <publishTime>11/08/2015 16:31:32</publishTime>
     </File>
     <File Include="Views/Shared/_Layout.cshtml">
-      <publishTime>11/08/2015 16:31:32</publishTime>
+      <publishTime>02/18/2017 14:48:19</publishTime>
     </File>
     <File Include="Views/Shared/_LoginPartial.cshtml">
       <publishTime>11/08/2015 16:31:32</publishTime>
@@ -340,7 +380,7 @@
       <publishTime>11/08/2015 16:30:32</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>12/14/2016 22:05:38</publishTime>
+      <publishTime>02/19/2017 17:43:23</publishTime>
     </File>
   </ItemGroup>
 </Project>

@@ -1,0 +1,75 @@
+﻿@model IEnumerable<ILoveYou.Models.Message>
+
+@{
+    ViewBag.Title = "留言列表";
+}
+
+<h2>留言列表</h2>
+
+<p>
+    @Html.ActionLink("创建新留言", "留言")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Receiver)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Sender)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BackImg)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BackMusic)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Content)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CreatedBy)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Receiver)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Sender)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BackImg)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.BackMusic)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Content)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedAt)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CreatedBy)
+        </td>
+        <td>
+            @Html.ActionLink("修改", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("明细", "Details", new { id=item.ID }) |
+            @Html.ActionLink("删除", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

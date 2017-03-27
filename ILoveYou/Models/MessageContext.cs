@@ -13,6 +13,7 @@ namespace ILoveYou.Models
         }
 
         public virtual DbSet<Message> Messages { get; set; }
+        public virtual DbSet<UserInfo> UserInfoes { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
